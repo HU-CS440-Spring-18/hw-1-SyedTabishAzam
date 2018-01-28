@@ -19,7 +19,7 @@
 % \printanswers
 
 \title{Habib University\\CS 440 Computer Graphics\\Spring 2018}
-\author{Homework 1}
+\author{Homework 1, \numpoints\ points}
 \date{Due: TBD}
 
 \begin{document}
@@ -28,13 +28,15 @@
 \begin{questions}
 
   \titledquestion{Mapping and Linear Interpolation}[5]
-  \begin{tabularx}{\textwidth}{cX}
+  \label{q:interpolate}
+  
+  \begin{tabularx}{\linewidth}{cX}
     \raisebox{-\totalheight}{
       \begin{tikzpicture}
         \draw (0,0) -- (4,4);
-        \node[circle,fill] at (.5,.5) (P){};
-        \node[circle,fill] at (3.5,3.5) (Q) {};
-        \node[circle,fill,blue] at (1.5,1.5) (X) {};
+        \node[circle,fill,inner sep=1.5pt] at (.5,.5) (P){};
+        \node[circle,fill,inner sep=1.5pt] at (3.5,3.5) (Q) {};
+        \node[circle,fill,blue,inner sep=1.5pt] at (1.5,1.5) (X) {};
         \node[below  = 2pt of P]{P};
         \node[right = 2pt of Q]{Q};
         \node[below right = 2pt of X]{\it X};
@@ -56,13 +58,15 @@
     \]
     $X$ is thus said to be an \href{https://en.wikipedia.org/wiki/Affine_combination}{\it affine combination} of P and Q.
     
-    Imagine a mapping from the range PQ to a new range, AB. We are interested in findining the coordinates of $X'$ which is the mapping of $X$ to the new range. Write a function {\tt map\_point(px, py, qx, qy, ax, ay, bx, by, x, y, \&\_x, \&\_y)} that takes as argument the coordinates of P, Q, A, B, and X and sets the last 2 arguments to the coorindates of $X'$.
+    Imagine a mapping from the range PQ to a new range, AB. We are interested in finding the coordinates of $X'$ which is the mapping of $X$ to the new range. Write a function {\tt map\_point(px, py, qx, qy, ax, ay, bx, by, x, y, \&\_x, \&\_y)} that takes as argument the coordinates of P, Q, A, B, and X and sets the last 2 arguments to the coorindates of $X'$.
   \end{tabularx}
+  \underline{File}: {\tt interpolate.cpp}
   
-  \titledquestion{Interaction: Polygons Galore!}[20]
+  \titledquestion{Interaction: Polygons Galore}[20]
+  \label{q:galore}
   
-  \begin{tabularx}{\textwidth}{lX}
-    \raisebox{-.85\totalheight}{\includegraphics[width=.4\textwidth]{galore}}
+  \begin{tabularx}{\linewidth}{lX}
+    \raisebox{-.9\totalheight}{\includegraphics[width=.35\textwidth]{galore}}
     &
     Write a program that interactively draws triangles and quadrilaterals. The program draws a point at the location of each mouse click. It supports two {\it modes} -- triangle mode (default) and quad mode. When in triangle mode, every 3 consecutive points are drawn as a triangle. When in quad mode, every 4 consecutive points are drawn as a quad.
 
@@ -71,31 +75,112 @@
     -- Pressing r or R clears the screen and resets to default.\newline
     -- Pressing t or T toggles between the drawing modes.
   \end{tabularx}
+  \underline{File}: {\tt galore.cpp}\\
+  \underline{Useful functions}: {\tt \href{https://www.opengl.org/resources/libraries/glut/spec3/node49.html#SECTION00084000000000000000}{glutKeyboardFunc}, \hyperref[q:galore]{map\_point}}
 
-  \titledquestion{Vertex Arrays}[10]
+  \titledquestion{Vertex Arrays: All At Once}[10]
 
-  \titledquestion{Idle Time: Catch me if you can}[20]
-  Draw a 2D object with non-zero area anywhere on the screen. After a random interval of time, it automatically changes position. You have to try to click on the object. If you succeed, you gain a point, otherwise you lose a point. Once you reach -3 points, the game ends.
-
-  Use: idle callback
-
-  \titledquestion{Approximating Smooth Surfaces}[20]
-  Approximate a circle using increasing number of points.
-
-  \titledquestion{Color Interpolation: In memory of Tim}[5]
-  Draw Maxwell's triangle.
-
-  \titledquestion{Color Interpolation}[10]
-  Draw the color bar.
-
-  \titledquestion{Triangle in a Triangle in a Triangle ...}[20]
-  Sierpinski gasket.
-
-  \titledquestion{Deja Vu}[35]
-  Mandelbrot set.
-
-
+  In Problem \ref{q:galore}, you specified the vertices one by one. Using \href{http://www.informit.com/articles/article.aspx?p=1377833&seqNum=6}{\it vertex arrays}, it is possible to specify the points all at once. Copy the file from the previous problem and modify only its display callback function (and any functions it may be calling) to use vertex arrays.
   
+  \noindent\underline{File}: {\tt atonce.cpp}\\
+  \underline{Useful functions}: {\tt \href{https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glVertexPointer.xml}{glVertexPointer}}\\
+  \underline{Useful links}: {\tt \href{http://www.songho.ca/opengl/gl_vertexarray.html}{Vertex Array}}\\
+  
+  \titledquestion{Timing: Catch Me If You Can}[20]
+  We want to test our reflexes by seeing how quickly we can click on an object on screen. Write a program that displays a 2D object with non-zero area anywhere in the window. The catch is that it is going to disappear and reappear at some other location after a random time interval. You have to click on it before it disappears. If you succeed, you get 1 point. If the object has moved away by the time you clicked, you get -1. The game ends when your score becomes -3.
+
+  \noindent\underline{File}: {catch.cpp}\\
+  \underline{Useful functions}: {\tt \href{https://www.opengl.org/resources/libraries/glut/spec3/node64.html#SECTION000819000000000000000}{glutTimerFunc}}
+
+  \titledquestion{Color Interpolation: In Memory of Tim}[5]
+  \label{q:maxwell}
+  
+  \begin{tabularx}{\linewidth}{cX}
+    \raisebox{-\totalheight}{\includegraphics[width=.35\linewidth]{maxwell}}
+    &
+    \href{https://en.wikipedia.org/wiki/James_Clerk_Maxwell}{James Clerk Maxwell} is best known for his work in elctromagnetic radiation resulting in the well known \href{https://en.wikipedia.org/wiki/Maxwell\%27s_equations}{Maxwell's equations}.
+    
+      Not surprisingly, he was also among the first ones to expore the \href{https://spie.org/publications/pm105_32_maxwell_triangle?SSO=1}{trichromatic theory of color}. This has led to what is now known as \href{http://www.appstate.edu/~steelekm/classes/psy3215/Maxwell.htm}{Maxwell's triangle}, also called simply the \href{https://en.wikipedia.org/wiki/Color_triangle}{color triangle}.
+      
+      The color triangle has the primary colors at its vertices and the interior is shaded by linear combinations of the colors at the vertices. At any interior point, the amount of color contibuted by a vertex is proportional to the distance of the vertex from that point.
+      
+      Write a program to display Maxwell's triangle.
+  \end{tabularx}
+  \underline{File}: {maxwell.cpp}\\
+  \underline{Fun fact}: {Maxwell had a short stint at \href{https://www.abdn.ac.uk/museums/collections/james-clerk-maxwell-professor-and-physicist-457.php}{University of Aberdeen}.}\\
+  
+  \titledquestion{Color Interpolation}[20]
+
+  \begin{center}
+    \includegraphics[width=\linewidth]{barbw}\\
+    \vspace{-75pt}\includegraphics[width=\linewidth]{barrgb}
+  \end{center}
+
+  \vspace{-25pt}In Problem \ref{q:maxwell}, we used the API's native color interpolation. For this problem, we will draw color bars for which we will perform the interpolation ourselves. We can use the technique from Problem \ref{q:interpolate} for the purpose. In later assignments we will see how to interpolate between more than 2 values as was done by the API in the above problem.
+  \begin{parts}
+    \part Draw a color bar that is white at one end and black at the other.
+    \part Draw a color bar that is red at one end, green in the middle, and blue at the other end.
+  \end{parts}
+  We should be able to switch between the two color bars by commenting and uncommenting at most a couple of lines in the display callback function.
+  
+  \noindent\underline{File}: {colorbar.cpp}\\
+  \underline{Fun Fact}: {Maxwell had a short stint at \href{https://www.abdn.ac.uk/museums/collections/james-clerk-maxwell-professor-and-physicist-457.php}{University of Aberdeen}.}
+  
+  \titledquestion{Approximating a Smooth Surface: $\lim\limits_{n\rightarrow\infty} \diamond = \circ$}[20]
+  \begin{center}
+    \includegraphics[width=\linewidth]{circle}
+  \end{center}
+
+  \begin{tabularx}{\linewidth}{lX}
+
+    \raisebox{-\totalheight}{
+  \begin{tikzpicture}
+   \draw [blue,thick,dashed,domain=0:90] plot ({3*cos(\x)}, {3*sin(\x)});    
+   node[circle,fill]{}(
+   \node [draw,circle,fill,inner sep=1.5pt] at (0,3) (a){};
+   \node [draw,circle,fill,inner sep=1.5pt] at (3,0) (b){};
+   \node [draw,circle,inner sep=1.5pt] at (0,0) (c){};
+   \node [draw,circle,inner sep=1.5pt] at (1.5,1.5) (p){};
+   \node [draw,circle,inner sep=1.5pt] at (2.12,2.12) (q){};
+
+   \draw [red] (a) -- (b);
+   \draw [dotted] (c) -- (p);
+   \draw [dotted] (p) -- (q);
+   \draw [dotted] (a) -- (q);
+   \draw [dotted] (b) -- (q);
+ \end{tikzpicture}
+ }
+    &
+    This problem explores the approximation of a smooth shape by a many sided polygon. Starting from a diamond on the left in the above figure, each next shape is recursively generated by inserting edge midpoints into the shape and projecting the new points to the circumference of the circle being approximated. This is illustrated in the figure on the left. The black line is approximating the blue circle. Its midpoint, when inserted, is projected to the circumfernce of the circle with respect to the circle's center.
+
+    Generate the above figure by repetitively refining a coarse initial approximation.
+  \end{tabularx}
+  \underline{File}: {circle.cpp}
+  
+  \titledquestion{Triangle in a Triangle in a Triangle ...}[20]
+
+  \begin{center}
+  \begin{tabularx}{\linewidth}{cX}
+    \includegraphics[width=.4\linewidth]{sierpinski}
+    &
+      \begin{tikzpicture}
+        \draw[red,thick] (0,0) -- (6,0) -- (3,5) -- cycle;
+        \draw[red,dashed] (3,0) -- (4.5,2.5) -- (1.5,2.5) -- cycle;
+        \draw[red,fill] (1.5, 1.25) circle (1.5pt);
+        \draw[red,fill] (4.5, 1.25) circle (1.5pt);
+        \draw[red,fill] (3, 3.75) circle (1.5pt);
+        
+        \node at (3,-1) {};
+      \end{tikzpicture}
+  \end{tabularx}
+\end{center}
+
+The \href{https://en.wikipedia.org/wiki/Sierpinski_triangle}{Sierpinski triangle} is a \href{https://en.wikipedia.org/wiki/Self-similarity}{self-similar} geometric shape with many interesting properties, not the least of which is the variety of ways in which it can be generated. The left figure above shows a Sierpinski tringle at recursion level 5.
+
+For this problem we shall define a Sierpinski triangle as shown in the right figure above. Starting with a triangle, connect all its edge midpoints. This yields 4 new triangles. Repeat the process for all the new triangles shown with a dot in them, except the one in the middle (witout a dot). Note that the dots in the figure are for demonstration purposes only. They are not part of the Sierpinski triangle.
+
+Write a program to generate the Sierpinski triangle at a desired recursion level which is set in {\tt main}.
+  \underline{File}: {sierpinski.cpp}
   
 \end{questions}
 
